@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="75dp"
+    android:elevation="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/coin_icon"
+        android:layout_width="250dp"
+        android:layout_height="250dp" />
+    <TextView
+        android:id="@+id/coin_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/coin_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/coin_icon"
+        app:layout_constraintRight_toRightOf="@+id/coin_icon"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+    <TextView
+        android:id="@+id/coin_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/coin_name"
+        app:layout_constraintLeft_toLeftOf="@+id/coin_name"
+        app:layout_constraintRight_toRightOf="@+id/coin_name"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+
+</android.support.constraint.ConstraintLayout>
