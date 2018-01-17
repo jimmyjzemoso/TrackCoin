@@ -14,27 +14,27 @@ import java.util.ArrayList;
 
 /**
  * @author Jimmy
- *         Created on 15/1/18.
+ *         Created on 16/1/18.
  */
 
-public class MainRcAdapter extends RecyclerView.Adapter<MainRcAdapter.ViewHolder> {
+public class AllCoinAdapter extends RecyclerView.Adapter<AllCoinAdapter.ViewHolder> {
     private ArrayList<MainDataSet> dataSet;
     private Context mContext;
-    public MainRcAdapter(ArrayList<MainDataSet> mainDataSet, Context mContext) {
+    public AllCoinAdapter(ArrayList<MainDataSet> mainDataSet, Context mContext) {
         dataSet = mainDataSet;
         this.mContext = mContext;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllCoinAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v =  LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_item_layout, parent, false);
+                .inflate(R.layout.add_new_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        return new ViewHolder(v);
+        return new AllCoinAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(AllCoinAdapter.ViewHolder holder, int position) {
 // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.coinName.setText(dataSet.get(position).getCoinName());

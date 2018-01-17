@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="coinmarketcap_api_url">https://api.coinmarketcap.com/v1/ticker/</string>
 </resources>

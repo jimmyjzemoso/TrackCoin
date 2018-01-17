@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TrackCoin</string>
     <string name="action_settings">Settings</string>
+    <string name="coin_image">coin image</string>
+    <string name="coinmarketcap_url">https://api.coinmarketcap.com/v1/ticker/</string>
+    <string name="slide_to_add_new_coin">Slide to add new coin</string>
 </resources>

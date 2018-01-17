@@ -7,20 +7,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/coin_icon"
-        android:layout_width="@dimen/coin_image_dimen"
-        android:layout_height="@dimen/coin_image_dimen"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:contentDescription="@string/coin_image" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/coin_icon"
-        app:layout_constraintLeft_toLeftOf="@+id/coin_icon"
-        app:layout_constraintRight_toRightOf="@+id/coin_icon">
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toEndOf="@+id/coin_icon"
+        app:layout_constraintTop_toTopOf="@+id/coin_icon"
+        app:layout_constraintBottom_toBottomOf="@id/coin_icon">
         <TextView
             android:id="@+id/coin_name"
             android:layout_width="wrap_content"
