@@ -18,10 +18,10 @@ import java.util.ArrayList;
  */
 
 public class MainRcAdapter extends RecyclerView.Adapter<MainRcAdapter.ViewHolder> {
-    private ArrayList<MainDataSet> dataSet;
+    private ArrayList<CoinDataSet> dataSet;
     private Context mContext;
-    public MainRcAdapter(ArrayList<MainDataSet> mainDataSet, Context mContext) {
-        dataSet = mainDataSet;
+    public MainRcAdapter(ArrayList<CoinDataSet> coinDataSet, Context mContext) {
+        dataSet = coinDataSet;
         this.mContext = mContext;
     }
 

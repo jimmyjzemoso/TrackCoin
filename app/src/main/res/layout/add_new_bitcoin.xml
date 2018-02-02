@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -14,9 +15,8 @@
         android:text="@string/slide_to_add_new_coin"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="@+id/add_coin_parent"
-        app:layout_constraintRight_toRightOf="@+id/add_coin_parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_coin_parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/all_coins"
@@ -24,6 +24,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>

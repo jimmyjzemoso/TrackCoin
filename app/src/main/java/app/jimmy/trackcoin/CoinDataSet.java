@@ -5,13 +5,13 @@ package app.jimmy.trackcoin;
  *         Created on 15/1/18.
  */
 
-public class MainDataSet {
+public class CoinDataSet {
     private int id;
     private String coinName;
     private String coinImageUrl;
     private String coinCost;
 
-    public MainDataSet(int id, String coinName, String coinImageUrl,String coinCost) {
+    public CoinDataSet(int id, String coinName, String coinImageUrl, String coinCost) {
         this.id = id;
         this.coinName = coinName;
         this.coinImageUrl = coinImageUrl;

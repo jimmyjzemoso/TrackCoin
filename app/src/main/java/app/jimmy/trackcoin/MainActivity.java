@@ -2,16 +2,22 @@ package app.jimmy.trackcoin;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,12 +31,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     private ProgressBar progressBar;
     private RecyclerView mMainRecyclerView,mAllCoinRecyclerView;
     private RecyclerView.Adapter mMainAdapter,mAllCoinAdapter;
     private RecyclerView.LayoutManager mMainLayoutManager,mAllCoinLayoutManager;
-    private ArrayList<MainDataSet> mainDataSet = new ArrayList<>();
+    private ArrayList<CoinDataSet> mainCoinData = new ArrayList<>();
+    private ArrayList<CoinDataSet> allCoinData = new ArrayList<>();
+    private View addNewCoins;
+    private GestureDetectorCompat mDetector;
+    private int screenHeight;
+    private TextView swipeView;
 
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -41,6 +52,25 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress);
         mMainRecyclerView = findViewById(R.id.recycler_view);
         mAllCoinRecyclerView = findViewById(R.id.all_coins);
+        addNewCoins = findViewById(R.id.add_coin_parent);
+        swipeView = findViewById(R.id.add_coin_scroll);
+
+        swipeView.post(new Runnable() {
+            @Override
+            public void run() {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int viewHeight = swipeView.getHeight();
+                screenHeight = displayMetrics.heightPixels - 2 * viewHeight;
+                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) addNewCoins.getLayoutParams();
+                lp.setMargins(lp.leftMargin,screenHeight,lp.rightMargin,lp.bottomMargin);
+                addNewCoins.setLayoutParams(lp);
+            }
+        });
+
+        addNewCoins.setOnTouchListener(this);
+
+        mDetector = new GestureDetectorCompat(this, new AddCoinGestureListener());
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
         mMainLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         mMainRecyclerView.setLayoutManager(mMainLayoutManager);
 
-        mAllCoinLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        mAllCoinLayoutManager = new LinearLayoutManager(this);
         mAllCoinRecyclerView.setLayoutManager(mAllCoinLayoutManager);
 
         // specify an adapter (see also next example)
-        mMainAdapter = new MainRcAdapter(mainDataSet,this);
-        mAllCoinAdapter = new AllCoinAdapter(mainDataSet, this);
+        mMainAdapter = new MainRcAdapter(mainCoinData,this);
+        mAllCoinAdapter = new AllCoinAdapter(allCoinData, this);
+
         mMainRecyclerView.setAdapter(mMainAdapter);
         mAllCoinRecyclerView.setAdapter(mAllCoinAdapter);
 
@@ -76,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,24 +140,81 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        // Display the first 500 characters of the response string.
-//                        text.setText("Response is: "+ response);
                         progressBar.setVisibility(View.GONE);
+                        Log.i(TAG,"Response: "+response);
                         for( int i = 0 ; i < response.length() ; i++ ){
                             JSONObject obj = response.optJSONObject(i);
-                            mainDataSet.add(new MainDataSet(obj.optInt("Id"),obj.optString("name"),obj.optString("ImageUrl"),obj.optString("price_usd")));
+                            allCoinData.add(new CoinDataSet(obj.optInt("Id"),obj.optString("name"),obj.optString("ImageUrl"),obj.optString("price_usd")));
                         }
                         mMainAdapter.notifyDataSetChanged();
+                        mAllCoinAdapter.notifyDataSetChanged();
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                for(int i = 0; i<20;i++){
+                    allCoinData.add(new CoinDataSet(i,"Dummy coin","","1000"));
+                }
                 Log.e(TAG,error.getMessage());
             }
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getActionMasked()){
+            case MotionEvent.ACTION_UP:{
+
+//                if()
+            }
+        }
+        return this.mDetector.onTouchEvent(motionEvent);
+    }
+
+    class AddCoinGestureListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDown(MotionEvent e) {
+            Log.v(TAG,"Action Down");
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) addNewCoins.getLayoutParams();
+            int newPosY = Math.round(e2.getRawY() - e1.getY());
+
+            if(marginLayoutParams.topMargin <= 0 && e2.getRawY() - e1.getRawY() < 0 ) {
+                newPosY = 0;
+            }
+
+            marginLayoutParams.setMargins(marginLayoutParams.leftMargin,
+                    newPosY,
+                    marginLayoutParams.rightMargin,
+                    marginLayoutParams.bottomMargin
+            );
+            Log.v(TAG,"On Scroll e1.y: "+e1.getRawY()+" e2.y: "+e2.getRawY()+" diffY :"+distanceY);
+            addNewCoins.setLayoutParams(marginLayoutParams);
+
+            return false;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            Log.v(TAG,"Fling Detected");
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) addNewCoins.getLayoutParams();
+
+            if( (e2.getRawY() - e1.getRawY() < 0) ) {
+                mlp.setMargins(mlp.leftMargin, 0, mlp.rightMargin, 100);
+//                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.swipe_up);
+//                addNewCoins.startAnimation(hyperspaceJumpAnimation);
+            }else{
+                mlp.setMargins(mlp.leftMargin, 1575, mlp.rightMargin, 0);
+            }
+            return false;
+        }
     }
 }

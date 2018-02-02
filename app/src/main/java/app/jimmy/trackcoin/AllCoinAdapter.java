@@ -18,10 +18,10 @@ import java.util.ArrayList;
  */
 
 public class AllCoinAdapter extends RecyclerView.Adapter<AllCoinAdapter.ViewHolder> {
-    private ArrayList<MainDataSet> dataSet;
+    private ArrayList<CoinDataSet> dataSet;
     private Context mContext;
-    public AllCoinAdapter(ArrayList<MainDataSet> mainDataSet, Context mContext) {
-        dataSet = mainDataSet;
+    public AllCoinAdapter(ArrayList<CoinDataSet> coinDataSet, Context mContext) {
+        dataSet = coinDataSet;
         this.mContext = mContext;
     }
 
